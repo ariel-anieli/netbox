@@ -102,21 +102,13 @@ sudo cp /opt/netbox-$OLDVER/gunicorn.py /opt/netbox/
 
 ### Option B: Check Out a Git Release
 
-This guide assumes that NetBox is installed in `/opt/netbox`. First, determine the latest release either by visiting our [releases page](https://github.com/netbox-community/netbox/releases) or by running the following command:
+This guide assumes that NetBox is installed in `/opt/netbox`. Check out the [latest release](https://github.com/netbox-community/netbox/releases):
 
 ```
-git ls-remote --tags https://github.com/netbox-community/netbox.git \
-  | grep -o 'refs/tags/v[0-9]*\.[0-9]*\.[0-9]*$' \
-  | tail -n 1 \
-  | sed 's|refs/tags/||'
-```
-
-Check out the desired release by specifying its tag. For example:
-
-```
+TAG=$(curl -s -k https://api.github.com/repos/netbox-community/netbox/releases/latest | awk -F'"' '/"tag_name"/{print $4; exit}')
 cd /opt/netbox && \
 sudo git fetch --tags && \
-sudo git checkout v4.5.0
+sudo git checkout $TAG
 ```
 
 ## 4. Run the Upgrade Script
